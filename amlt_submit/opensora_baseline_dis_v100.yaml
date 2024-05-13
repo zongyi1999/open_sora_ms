@@ -1,0 +1,57 @@
+description: open sora training
+target:
+  service: sing
+  name: gcrprojvc1
+environment:
+  image: 1490780232/opensora:v1.1
+  #image: lozhou/zhikang_test:v0.1
+  #image: lozhou/fairseq_aml_docker:torch1.8_fairseq
+  # username: zkniu
+  # registry: docker.io # any public registry can be specified here
+  # image:  wumark/valle:flash_v2  # unset CUDA_VISIBLE_DEVICES
+  # setup:
+  #   - export PYTHONPATH="${PYTHONPATH}:${PWD}"
+
+code:
+  local_dir: $CONFIG_DIR/../
+  ignore:
+  - pretrained_models/*
+  - outputs/*
+  - samples/*
+  
+storage:
+  # output:
+  #   storage_account_name: tsstd01wus2
+  #   container_name: models
+  #   mount_dir: /modelblob
+  #   mount_options: ["-o", "attr_timeout=240"]
+  blob_valle:
+    storage_account_name: valle
+    container_name: users
+    mount_dir: /valleblob
+
+search:
+  job_template:
+    name: open-sora-baseline-o-pretrain
+    sku: 1x32G4-V100-IB
+    sla_tier: Premium
+    priority: high
+    process_count_per_node: -1
+    command:
+      #- conda init
+      # - source activate py36
+      # - export model_path=/valleblob/vzongyili/cv/model/tats/vqgan/vqgan_ucf101_baseline_g{gpus}_b{batch_size}_wandb
+      - bash train.sh {gpus} #{batch_size} $$model_path
+      - sleep 3h
+    submit_args:
+      env:
+        NCCL_DEBUG: INFO
+        MKL_NUM_THREADS: 1
+        OMP_NUM_THREADS: 1
+        MKL_SERVICE_FORCE_INTEL: 1
+  type: grid
+  max_trials: 500
+  params:
+    - name: gpus
+      spec: discrete
+      values: [4] 
