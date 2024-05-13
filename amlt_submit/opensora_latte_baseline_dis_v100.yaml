@@ -11,7 +11,8 @@ environment:
   # image:  wumark/valle:flash_v2  # unset CUDA_VISIBLE_DEVICES
   # setup:
   #   - export PYTHONPATH="${PYTHONPATH}:${PWD}"
-
+  setup:
+    - pip install ftfy regex imageio imageio-ffmpeg pytorch_lightning
 code:
   local_dir: $CONFIG_DIR/../
   ignore:

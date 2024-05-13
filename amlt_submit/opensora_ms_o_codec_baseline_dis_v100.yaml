@@ -41,7 +41,7 @@ search:
       #- conda init
       # - source activate py36
       # - export model_path=/valleblob/vzongyili/cv/model/tats/vqgan/vqgan_ucf101_baseline_g{gpus}_b{batch_size}_wandb
-      - bash train_latte.sh {gpus} #{batch_size} $$model_path
+      - bash train_ms.sh {gpus} #{batch_size} $$model_path
       - sleep 3h
     submit_args:
       env:
