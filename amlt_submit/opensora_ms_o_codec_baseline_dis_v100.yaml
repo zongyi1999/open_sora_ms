@@ -3,7 +3,7 @@ target:
   service: sing
   name: gcrprojvc1
 environment:
-  image: 1490780232/opensora:v1.2
+  image: 1490780232/opensora:v1.3
   #image: lozhou/zhikang_test:v0.1
   #image: lozhou/fairseq_aml_docker:torch1.8_fairseq
   # username: zkniu
@@ -11,7 +11,8 @@ environment:
   # image:  wumark/valle:flash_v2  # unset CUDA_VISIBLE_DEVICES
   # setup:
   #   - export PYTHONPATH="${PYTHONPATH}:${PWD}"
-
+  # setup:
+  #   - pip install ftfy regex imageio imageio-ffmpeg pytorch_lightning
 code:
   local_dir: $CONFIG_DIR/../
   ignore:
@@ -33,7 +34,7 @@ storage:
 search:
   job_template:
     name: open-sora-baseline-ms-o-codec-sora-pretrained_multi_node
-    sku: 2x32G8-V100-IB
+    sku: 1x32G8-V100-IB
     sla_tier: Premium
     priority: high
     process_count_per_node: -1
@@ -54,4 +55,4 @@ search:
   params:
     - name: gpus
       spec: discrete
-      values: [4] 
+      values: [8] 
